@@ -1,7 +1,7 @@
-import psycopg2
+import psycopg
 
-#connection = psycopg2.connect(database="db_privileges", user="postgres", password="password", host="localhost", port=5432)
-connection = psycopg2.connect(database="db_privileges", user="john", password="Oberstufe", host="localhost", port=5432)
+#connection = psycopg.connect(database="db_privileges", user="postgres", password="password", host="localhost", port=5432)
+connection = psycopg.connect(database="db_privileges", user="john", password="Oberstufe", host="localhost", port=5432)
 
 cursor = connection.cursor()
 cursor.execute("SELECT current_user;")
