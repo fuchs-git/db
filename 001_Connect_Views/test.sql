@@ -20,6 +20,14 @@ SELECT nspname as schema, rolname as besitzer FROM pg_catalog.pg_namespace INNER
 CREATE SCHEMA dinge;
 create TABLE in_dinge(dings_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY , dings_inhalt text);
 
+CREATE DATABASE db_privileges;
+
 drop TABLE in_dinge;
 DROP SCHEMA dinge;
+
+
+
+--
+CREATE SCHEMA johns_schema AUTHORIZATION john;
+
 
