@@ -233,10 +233,20 @@ ORDER BY bestelldatum;
 --- View anlegen für offene Bestellungen mit:
 -- bestellung_id, bestelldatum, kundenname und Lieferadresse in einem Feld als "hausnummer strasse \n ort plz"
 
-
-
 -- View "Bestellungen mit Einzelposten" mit bestellung_id, bestelldatum, kunde_id, name, produktbezeichnung gekürzt auf 40 Zeichen mit '...' dahinter,
 -- Anzahl, preis (als Einzelpreis), Anzahl * preis als NUMERIC(50,2) als posten sortiert nach bestellung_id und produktbezeichnung
+CREATE VIEW Bestellungen_mit_Einzelposten AS
+SELECT k.kunde_id,
+       k.name,
+       LEFT(p.bezeichnung, 40) AS artikel,
+       u.anzahl,
+       p.preis,
+       (u.anzahl * p.preis)::NUMERIC(50, 2) as posten
+FROM bestellung
+         INNER JOIN kunde k ON bestellung.fk_kunde_id = k.kunde_id
+         INNER JOIN umfasst u ON bestellung.bestellung_id = u.fk_bestellung_id
+         INNER JOIN produkt p ON u.fk_produkt_id = p.produkt_id;
+
 
 -- View für die Kopfdaten der Rechnung
 
