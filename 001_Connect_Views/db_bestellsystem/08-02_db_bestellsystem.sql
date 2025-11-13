@@ -211,8 +211,16 @@ VALUES ((SELECT bestellung_id
 
 
 -- eine View mit kunde (id, name) und Rechnungsadresse ("hausnummer strasse \n ort plz") bauen
+DROP  VIEW kunden;
+CREATE VIEW kunden AS
+select kunde.kunde_id, kunde.name,
+       concat(adresse.hausnummer, ' ', adresse.strasse,e'\n', adresse.ort,' ', adresse.plz) as Adresse
+from kunde
+    inner join adresse on kunde.fk_rechnungsadresse = adresse.adresse_id;
 
 -- eine View bauen, die die offenen Bestellungen enthält, mit bestelldatum, kundename, bestellung_id, absteigend sortiert  dem Alter der Bestellung
+
+
 
 --- View anlegen für offene Bestellungen mit:
 -- bestellung_id, bestelldatum, kundenname und Lieferadresse in einem Feld als "hausnummer strasse \n ort plz"
