@@ -1,10 +1,9 @@
-CREATE DATABASE db_bestellsystem template template0;
+CREATE DATABASE db_bestellsystem TEMPLATE template0;
 
 DROP TABLE IF EXISTS adresse,kunde,produkt,bestellung,umfasst CASCADE;
 -- TRUNCATE TABLE adresse,kunde,produkt,bestellung,umfasst CASCADE;
 
-CREATE TABLE adresse
-(
+CREATE TABLE adresse (
     adresse_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     strasse    TEXT NOT NULL,
     hausnummer TEXT DEFAULT '',
@@ -12,24 +11,21 @@ CREATE TABLE adresse
     ort        TEXT NOT NULL
 );
 
-CREATE TABLE kunde
-(
+CREATE TABLE kunde (
     kunde_id            INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name                TEXT    NOT NULL,
     email               TEXT    NOT NULL UNIQUE,
     fk_rechnungsadresse INTEGER NOT NULL REFERENCES adresse (adresse_id)
 );
 
-CREATE TABLE produkt
-(
+CREATE TABLE produkt (
     produkt_id   INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    bezeichnung  TEXT           NOT NULL CHECK ( length(bezeichnung) <= 100 ),
+    bezeichnung  TEXT           NOT NULL CHECK ( LENGTH(bezeichnung) <= 100 ),
     beschreibung TEXT           NOT NULL,
     preis        DECIMAL(10, 2) NOT NULL CHECK ( preis > 0 )
 );
 
-CREATE TABLE bestellung
-(
+CREATE TABLE bestellung (
     bestellung_id    INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     fk_kunde_id      INTEGER NOT NULL REFERENCES kunde (kunde_id),
     fk_lieferadresse INTEGER NOT NULL REFERENCES adresse (adresse_id),
@@ -37,8 +33,7 @@ CREATE TABLE bestellung
     versanddatum     DATE CHECK ( bestelldatum <= versanddatum )
 );
 
-CREATE TABLE umfasst
-(
+CREATE TABLE umfasst (
     fk_bestellung_id INTEGER REFERENCES bestellung (bestellung_id),
     fk_produkt_id    INTEGER REFERENCES produkt (produkt_id),
     anzahl           INTEGER CHECK ( anzahl > 0 ),
@@ -211,19 +206,34 @@ VALUES ((SELECT bestellung_id
 
 
 -- eine View mit kunde (id, name) und Rechnungsadresse ("hausnummer strasse \n ort plz") bauen
-DROP  VIEW kunden;
+DROP VIEW IF EXISTS kunden;
 CREATE VIEW kunden AS
-select kunde.kunde_id, kunde.name,
-       concat(adresse.hausnummer, ' ', adresse.strasse,e'\n', adresse.ort,' ', adresse.plz) as Adresse
-from kunde
-    inner join adresse on kunde.fk_rechnungsadresse = adresse.adresse_id;
+SELECT kunde.kunde_id,
+       kunde.name,
+       CONCAT(adresse.hausnummer, ' ', adresse.strasse, e'\n', adresse.ort, ' ', adresse.plz) AS adresse
+FROM kunde
+         INNER JOIN adresse ON kunde.fk_rechnungsadresse = adresse.adresse_id;
 
 -- eine View bauen, die die offenen Bestellungen enthält, mit bestelldatum, kundename, bestellung_id, absteigend sortiert  dem Alter der Bestellung
+CREATE VIEW offene_bestellungen AS
+SELECT DISTINCT bestellung_id,
+                bestelldatum,
+                kunde.name,
+                CONCAT(adresse.hausnummer, ' ', adresse.strasse, e'\n', adresse.ort, ' ',
+                       adresse.plz) AS lieferadressedresse
+
+FROM bestellung
+         INNER JOIN kunde ON bestellung.fk_kunde_id = kunde.kunde_id
+         INNER JOIN adresse ON bestellung.fk_lieferadresse = adresse.adresse_id
+WHERE versanddatum IS NULL
+ORDER BY bestelldatum;
 
 
 
 --- View anlegen für offene Bestellungen mit:
 -- bestellung_id, bestelldatum, kundenname und Lieferadresse in einem Feld als "hausnummer strasse \n ort plz"
+
+
 
 -- View "Bestellungen mit Einzelposten" mit bestellung_id, bestelldatum, kunde_id, name, produktbezeichnung gekürzt auf 40 Zeichen mit '...' dahinter,
 -- Anzahl, preis (als Einzelpreis), Anzahl * preis als NUMERIC(50,2) als posten sortiert nach bestellung_id und produktbezeichnung
