@@ -255,11 +255,41 @@ ORDER BY bestelldatum;
 
 
 -- View für die Kopfdaten der Rechnung
+DROP VIEW kopfdaten_rechnung;
+CREATE VIEW kopfdaten_rechnung AS
+SELECT bestellung_id, bestelldatum, kunden.name, kunden.adresse, SUM(bme.posten) AS summe
+FROM kunden
+         INNER JOIN bestellungen_mit_einzelposten AS bme ON kunden.kunde_id = bme.kunde_id
+GROUP BY bestellung_id, bestelldatum, kunden.name, kunden.adresse;
+
+SELECT *
+FROM kopfdaten_rechnung
+WHERE bestellung_id = 2;
+
+
+SELECT bestelldatum, name, adresse, summe
+FROM kopfdaten_rechnung
+WHERE bestellung_id = 2;
 
 --Erstellung einer Rechnung
+DROP VIEW rechnugsadressen;
+CREATE VIEW rechnugsadressen AS
+SELECT strasse, hausnummer, plz, ort
+FROM adresse;
 
 -- View für INSERT
+INSERT INTO rechnugsadressen(strasse, hausnummer, plz, ort)
+VALUES ('Moorweg', '12', '12345', 'Kleinaitingen');
+
 
 -- View für Insert mit Prädikat
+CREATE VIEW teestrassen AS
+SELECT strasse, hausnummer, plz, ort
+FROM adresse
+WHERE  strasse ILIKE 't%';
 
+INSERT INTO teestrassen(strasse, hausnummer, plz, ort)
+VALUES ('Tennisweg', '12', '12345', 'Kleinaitingen');
 
+INSERT INTO teestrassen(strasse, hausnummer, plz, ort)
+VALUES ('Pennisweg', '12', '12345', 'Kleinaitingen');
