@@ -27,7 +27,7 @@ VALUES ('01.10.2025', 'Pimpelhuber'),
 SELECT datum, person
 FROM wache;
 
-SELECT person, COUNT(*)
+SELECT person, COUNT(:)
 FROM wache
 GROUP BY person;
 
@@ -55,8 +55,7 @@ SELECT person, anzahl
 FROM (SELECT person, COUNT(*) AS anzahl FROM wache GROUP BY person)
 WHERE anzahl > 5;
 
-select person, anzahl from (SELECT person, COUNT(*) AS anzahl FROM wache GROUP BY person) as t
-WHERE anzahl > 5;
+select person, anzahl from (SELECT person, COUNT(*) AS anzahl FROM wache GROUP BY person) as t WHERE anzahl > 5;
 
 CREATE ROLE Nutzergruppe NOLOGIN
 
