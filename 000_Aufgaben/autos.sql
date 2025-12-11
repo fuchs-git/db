@@ -1,7 +1,8 @@
 -- CREATE DATABASE db_autos;
 
 -- Hersteller / Marken
-CREATE TABLE brand (
+CREATE TABLE brand
+(
     brand_id     SERIAL PRIMARY KEY,
     name         VARCHAR(100) NOT NULL,
     country      VARCHAR(50)  NOT NULL,
@@ -10,7 +11,8 @@ CREATE TABLE brand (
 );
 
 -- Modelle
-CREATE TABLE model (
+CREATE TABLE model
+(
     model_id       SERIAL PRIMARY KEY,
     brand_id       INT          NOT NULL REFERENCES brand (brand_id),
     name           VARCHAR(100) NOT NULL,
@@ -21,7 +23,8 @@ CREATE TABLE model (
 );
 
 -- Motoren
-CREATE TABLE engine (
+CREATE TABLE engine
+(
     engine_id      SERIAL PRIMARY KEY,
     name           VARCHAR(100) NOT NULL,
     fuel_type      VARCHAR(20)  NOT NULL, -- Petrol, Diesel, Hybrid, Electric
@@ -30,14 +33,16 @@ CREATE TABLE engine (
 );
 
 -- Zuordnung Modelle <-> Motoren (N:M)
-CREATE TABLE model_engine (
+CREATE TABLE model_engine
+(
     model_id  INT NOT NULL REFERENCES model (model_id),
     engine_id INT NOT NULL REFERENCES engine (engine_id),
     PRIMARY KEY (model_id, engine_id)
 );
 
 -- Händler
-CREATE TABLE dealership (
+CREATE TABLE dealership
+(
     dealer_id SERIAL PRIMARY KEY,
     name      VARCHAR(100) NOT NULL,
     city      VARCHAR(100) NOT NULL,
@@ -45,7 +50,8 @@ CREATE TABLE dealership (
 );
 
 -- Bestände pro Händler & Modell
-CREATE TABLE car_stock (
+CREATE TABLE car_stock
+(
     dealer_id            INT NOT NULL REFERENCES dealership (dealer_id),
     model_id             INT NOT NULL REFERENCES model (model_id),
     quantity             INT NOT NULL,
@@ -384,6 +390,19 @@ GROUP BY fuel_type;
 --       - quantity
 --       - avg_discount_percent
 --     Nutze dealership, car_stock, model, brand.
+create view v_dealer_stock as
+select dealership.dealer_id dealer_id,
+       dealership.name      dealer_name,
+       city,
+       b.name               brand_name,
+       m.name               model_name,
+       segment,
+       quantity,
+       avg_discount_percent
+from dealership
+         inner join car_stock cs on dealership.dealer_id = cs.dealer_id
+         inner join model m on m.model_id = cs.model_id
+         inner join brand b on b.brand_id = m.brand_id;
 
 -- 20) Erstelle eine View v_brand_model_counts:
 --     Pro Marke:
@@ -391,7 +410,11 @@ GROUP BY fuel_type;
 --       - brand_name
 --       - model_count
 --     Nutze Aggregatfunktionen über die Tabelle model.
-
+select brand.brand_id, brand.name, count(m)
+from brand
+         inner join model m on brand.brand_id = m.brand_id
+group by brand.brand_id, brand.name
+order by brand_id;
 
 -- --------------------------------------------
 -- LEVEL 5 – Views auf Views
@@ -438,6 +461,8 @@ GROUP BY fuel_type;
 --   - Zum Kontrollieren kannst du später u. a. folgende Tabellen/Views nutzen:
 --       * pg_roles
 --       * pg_auth_members
+select * from pg_roles where rolname not like 'pg_%';
+select * from pg_auth_members;
 --   - Beispiele für Kontrollabfragen (nicht Teil der Aufgaben):
 --       SELECT rolname, rolsuper, rolcreatedb, rolcreaterole
 --       FROM pg_roles
@@ -457,18 +482,25 @@ GROUP BY fuel_type;
 --     - car_sales
 --     - car_admin
 --     Alle Rollen sollen sich mit LOGIN einloggen dürfen.
+create role car_readonly;
 
 -- 27) Lege zwei neue Benutzer an:
 --     - user_alice
 --     - user_bob
 --     Weise beiden ein beliebiges Passwort zu.
 --     (Für Übungen reicht ein einfaches Passwort.)
+create role user_alice login password '1234_qwer!';
+
 
 -- 28) Ordne die Rollen wie folgt zu (GRANT):
 --     - car_readonly wird user_alice und user_bob zugewiesen.
 --     - car_sales wird nur user_alice zugewiesen.
 --     - car_admin wird nur user_bob zugewiesen.
+grant car_readonly to user_alice;
 
+SELECT rolname
+FROM pg_roles
+WHERE pg_has_role('user_alice', oid, 'member');
 -- 29) Kaskadiere die Rollen:
 --     - car_sales soll alle Rechte von car_readonly erben.
 --     - car_admin soll alle Rechte von car_sales erben.
@@ -481,3 +513,11 @@ GROUP BY fuel_type;
 --       - Dass beide Benutzer (user_alice, user_bob) existieren.
 --       - Welche Rollen welchen Benutzern zugeordnet sind.
 --       - Welche Rollen anderen Rollen zugeordnet sind (Rollen-Hierarchie).
+
+CREATE SCHEMA besoldung;
+GRANT USAGE ON SCHEMA besoldung TO r_refue_lesen; -- Berechtigung zum Zugriff aufs Schema,
+-- REVOKE ALL ON SCHEMA besoldung FROM PUBLIC; -- alle anderen ausschließen
+-- GRANT ALL PRIVILEGES ON SCHEMA besoldung TO r_fuehrung_vollzugriff; -- bekommt USAGE
+und CREATE Rechte aufs Schema
+-- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA besoldung TO r_fuehrung_vollzugriff; --
+bekommt Zugriff auf alle Tabellen
