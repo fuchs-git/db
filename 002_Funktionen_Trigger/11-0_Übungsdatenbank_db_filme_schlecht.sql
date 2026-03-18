@@ -77,3 +77,48 @@ SELECT title,
            ELSE 'nix schlaues'
            END AS schlaue_sachen_zum_jahr
 FROM most_popular_films;
+
+
+-- Union Case
+SELECT title,
+       release_year,
+       CASE
+           WHEN release_year % 2 = 0 THEN 'gerade'
+           WHEN release_year % 3 = 0 THEN CONCAT(release_year, ' ist durch 3 teilbar')
+           ELSE 'nix schlaues'
+           END AS schlaue_sachen
+FROM (SELECT *
+      FROM top_rated_films
+      UNION
+      SELECT *
+      FROM most_popular_films)
+ORDER BY release_year;
+
+-- Unterabfragen mit with
+WITH alle_filme AS (SELECT *
+                    FROM top_rated_films
+                    UNION
+                    SELECT *
+                    FROM most_popular_films)
+SELECT title,
+       release_year,
+       CASE
+           WHEN release_year % 2 = 0 THEN 'gerade'
+           WHEN release_year % 3 = 0 THEN CONCAT(release_year, ' ist durch 3 teilbar')
+           ELSE 'nix schlaues'
+           END AS schlaue_sachen
+FROM alle_filme;
+
+-- CTE = Commun Table Expressions
+WITH die_eine AS (SELECT title, release_year FROM top_rated_films),
+     die_zweite AS (SELECT title, release_year FROM most_popular_films),
+     alle AS (SELECT title, release_year FROM die_eine UNION SELECT title, release_year FROM die_zweite)
+
+SELECT title,
+       release_year,
+       CASE
+           WHEN release_year % 2 = 0 THEN 'gerade'
+           WHEN release_year % 3 = 0 THEN CONCAT(release_year, ' ist durch 3 teilbar')
+           ELSE 'nix schlaues'
+           END AS schlaue_sachen
+FROM alle;
