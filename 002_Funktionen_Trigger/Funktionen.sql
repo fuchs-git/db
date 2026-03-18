@@ -13,8 +13,14 @@ WHERE name ILIKE '%python%';
 CREATE EXTENSION plpython3u;
 
 
-SELECT $$Hallo Welt$$ as dollar_quoted,
-       'Hallo Welt' as normal,
-       $$Hallo Welt$$ = 'Hallo Welt' as vergleich;
+SELECT $$Hallo Welt$$                AS dollar_quoted,
+       'Hallo Welt'                  AS normal,
+       $$Hallo Welt$$ = 'Hallo Welt' AS vergleich;
+
+
+DO LANGUAGE plpython3u
+$$
+print('Hello World!')
+$$;
 
 
