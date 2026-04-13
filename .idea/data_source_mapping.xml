@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query.sql" value="32a7b3ec-10ae-445b-a4e4-705880969e9f" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_1.sql" value="32a7b3ec-10ae-445b-a4e4-705880969e9f" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_2.sql" value="7860ace5-612b-4d63-8a36-3add621323e7" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_3.sql" value="d1749592-915a-4156-a2e8-23de907e5379" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_4.sql" value="dc32b576-4127-48a9-ba31-a0787cc86a6f" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_5.sql" value="dc32b576-4127-48a9-ba31-a0787cc86a6f" />
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/Wachdienst/Wachdienste_Marine.sql" value="d1749592-915a-4156-a2e8-23de907e5379" />
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/Wachdienst/aufgaben.sql" value="d1749592-915a-4156-a2e8-23de907e5379" />
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/autos.sql" value="7860ace5-612b-4d63-8a36-3add621323e7" />
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/videothek/aufgaben.sql" value="6201a338-98eb-4363-907f-3e6b0a1cdbb0" />
+  </component>
+</project>

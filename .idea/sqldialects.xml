@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_1.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_2.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_3.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_4.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_5.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/Wachdienst/Wachdienste_Marine.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/Wachdienst/aufgaben.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/autos.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/videothek/aufgaben.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/001_Connect_Views/db_bestellsystem/08-02_db_bestellsystem.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/001_Connect_Views/db_bestellsystem/views_db_bestellsystem.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/001_Connect_Views/johns_zeug.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/001_Connect_Views/test.sql" dialect="PostgreSQL" />
+  </component>
+</project>
