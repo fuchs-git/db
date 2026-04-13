@@ -141,7 +141,7 @@ grant select on v_gefahrenzulage to r_refue_lesen;
 
 select wachid, soldat.name, EXTRACT(EPOCH FROM (EndeZeit - StartZeit)) / 3600 as gesamtstunden
 from wachdienst
-inner join soldat on wachdienst.soldatid = soldat.persnr
+         inner join soldat on wachdienst.soldatid = soldat.persnr
 where EXTRACT(EPOCH FROM (EndeZeit - StartZeit)) / 3600 >
       (SELECT AVG(EXTRACT(EPOCH FROM (EndeZeit - StartZeit)) / 3600) FROM wachdienst)
 order by gesamtstunden;
@@ -155,4 +155,22 @@ order by gesamtstunden;
 -- name --  persnr --  taktische_id
 -- Just --  20211 --  JUS-20211
 
-select name, persnr, upper(left(name, 3)) || '-' || persnr as  taktische_id from soldat;
+select name, persnr, upper(left(name, 3)) || '-' || persnr as taktische_id
+from soldat;
+
+
+SELECT p1.name, p2.name, o.name
+FROM besuch b1
+         JOIN besuch b2 ON b1.ort_id = b2.ort_id
+         JOIN personen p1 ON b1.person_id = p1.person_id
+         JOIN personen p2 ON b2.person_id = p2.person_id
+         JOIN orte o ON b1.ort_id = o.ort_id
+WHERE p1.name = 'Alice'
+  AND p2.name = 'Dave'
+  AND b1.zeitpunkt BETWEEN '2024-10-03 20:00' AND '2024-10-03 23:59'
+  AND b2.zeitpunkt BETWEEN '2024-10-03 20:00' AND '2024-10-03 23:59';
+
+
+MATCH
+(alice:Person {name :'Alice'})-[:WAR_AN]->(ort)<-[:WAR_AN]-(dave:Person {name:'Dave'})
+RETURN alice.name, dave.name, ort.name;
