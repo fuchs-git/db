@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/See_Blockade/Aufgaben.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/000_Aufgaben/See_Blockade/hormus_setup.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/002_Funktionen_Trigger/11-0_Übungsdatenbank_db_filme_schlecht.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/002_Funktionen_Trigger/Funktionen.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/002_Funktionen_Trigger/postgres_file.sql" dialect="PostgreSQL" />
